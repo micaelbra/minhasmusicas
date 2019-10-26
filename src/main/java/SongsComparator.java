@@ -1,16 +1,18 @@
+import static java.util.Arrays.asList;
+
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 public class SongsComparator {
 
-	private static final String LOCAL_FOLDER_PATH = "C:\\Users\\Usuário\\Music";
+	private static final int SIM = 1;
 	private static final String SEPARATOR = ";";
-	private static SongService service = new SongService();
+	private static SongService songService = new SongService();
 	
 	public static void main(String[] args) {
-		List<String> localSongs = service.getAllSongsNames(LOCAL_FOLDER_PATH);
+		List<String> localSongs = songService.getSongsNames(PropertiesService.getProperty("local.folder.path"));
 		List<String> repositorySongs = getRepositorySongs(); 
 
 		List<String> diffSongsRepository = getDiffSongs(localSongs, repositorySongs);
@@ -31,22 +33,29 @@ public class SongsComparator {
 		for (String song : diffSongsRepository) {
 			System.out.println(song);
 		}
-
+		
 		addSongsToRepositoryFile(diffSongsRepository);
 	}
 
 	private static void addSongsToRepositoryFile(List<String> diffSongsRepository) {
 		if (diffSongsRepository.size() > 0) {
-			String formatedSongsNames = "";
+			System.out.println("Deseja adicionar as musicas ao repositório?");
+			System.out.println("1-Sim ou 2-Não");
+			Scanner sc = new Scanner(System.in);
+			int input = sc.nextInt();
 			
-			for (String song : diffSongsRepository) {
-				formatedSongsNames += song + SEPARATOR;
-			}
-			
-			try {
-				service.appendContentToFile(formatedSongsNames);
-			} catch (IOException e) {
-				e.printStackTrace();
+			if (input == SIM) {
+				String formatedSongsNames = "";
+				
+				for (String song : diffSongsRepository) {
+					formatedSongsNames += song + SEPARATOR;
+				}
+				
+				try {
+					songService.appendContentToFile(formatedSongsNames);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
@@ -71,20 +80,18 @@ public class SongsComparator {
 	}
 
 	private static List<String> getRepositorySongs() {
-		List songsList = new ArrayList<>();
-
 		try {
-			String repositorySongs = service.getFileContent();
+			String repositorySongs = songService.getFileContent();
 			String[] splittedSongs = repositorySongs.split(SEPARATOR);
 			
 			if (splittedSongs.length > 0) {
-				songsList = Arrays.asList(splittedSongs);
+				return asList(splittedSongs);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
-		return songsList;
+		return new ArrayList<>();
 	}
 
 }
