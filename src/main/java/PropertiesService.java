@@ -7,6 +7,7 @@ import java.util.Properties;
 public class PropertiesService {
 
 	private static final String PROPERTIES_FILE_PATH = "src/main/resources/application.properties";
+	public static final String REPOSITORY_FILE_PATH = "repository.file.path";
 
 	public static String getProperty(String key) {
 		String localFolderPath = "";

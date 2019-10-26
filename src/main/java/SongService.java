@@ -1,22 +1,16 @@
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.nio.file.attribute.FileAttribute;
-import java.nio.file.attribute.PosixFilePermission;
-import java.nio.file.attribute.PosixFilePermissions;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class SongService {
 
 	private static final String MP3 = ".mp3";
-	String songsFilePath = PropertiesService.getProperty("repository.file.path");
+	String songsFilePath = PropertiesService.getProperty(PropertiesService.REPOSITORY_FILE_PATH);
 
 	public List<String> getSongsNames(String path) {
 		File songsFolder = new File(path);
