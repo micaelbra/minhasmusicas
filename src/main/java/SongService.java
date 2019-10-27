@@ -14,11 +14,11 @@ public class SongService {
 
 	private static final String MP3 = ".mp3";
 	private static final int SIM = 1;
-	public static final String SEPARATOR = ";";
+	private static final String SEPARATOR = ";";
 	
 	private String songsFilePath = PropertiesService.getProperty(PropertiesService.REPOSITORY_FILE_PATH);
 	
-	public List<String> getRepositorySongs() {
+	private List<String> getRepositorySongs() {
 		try {
 			String repositorySongs = getFileContent();
 			String[] splittedSongs = repositorySongs.split(SEPARATOR);
@@ -33,7 +33,7 @@ public class SongService {
 		return new ArrayList<>();
 	}
 
-	public List<String> getLocalSongsNames(String path) {
+	private List<String> getLocalSongsNames(String path) {
 		File songsFolder = new File(path);
 		List<String> songsNames = new ArrayList<>();
 		
@@ -50,14 +50,14 @@ public class SongService {
 		return songsNames;
 	}
 	
-	public void appendContentToFile(String textToAppend) throws IOException {
+	private void appendContentToFile(String textToAppend) throws IOException {
 		BufferedWriter writer = new BufferedWriter(new FileWriter(songsFilePath, true));	
 		writer.write(textToAppend);
 		writer.close();
 		System.out.println("Musicas adicionadas: " + textToAppend);
 	}
 
-	public String getFileContent() throws IOException {
+	private String getFileContent() throws IOException {
 		File file = new File(songsFilePath);
 		
 		if (!file.exists()) {
@@ -67,7 +67,7 @@ public class SongService {
 		return new String(Files.readAllBytes(Paths.get(songsFilePath)));
 	}
 	
-	public List<String> getDiffSongs(List<String> songList1, List<String> songList2) {
+	private List<String> getDiffSongs(List<String> songList1, List<String> songList2) {
 		List<String> diffSongs = new ArrayList<>();
 		
 		for (String song1 : songList1) {
